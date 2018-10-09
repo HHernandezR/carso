@@ -13,17 +13,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "USUARIO_TOKEN")
+@Table(name = "TG_USUARIO_TOKEN")
 public class UsuarioTokenEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USUARIO_TOKEN_SEQ")
-	@SequenceGenerator(sequenceName = "usuario_token_seq", allocationSize = 1, name = "USUARIO_TOKEN_SEQ")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TG_USUARIO_TOKEN_SEQ")
+	@SequenceGenerator(sequenceName = "tg_usuario_token_seq", allocationSize = 1, name = "TG_USUARIO_TOKEN_SEQ")
 	@Column(name = "ID_USUARIO_TOKEN")
 	private Long idUsuarioToken;
 	
@@ -31,11 +30,9 @@ public class UsuarioTokenEntity implements Serializable {
     @JoinColumn(name = "ID_USUARIO")
 	private UsuarioEntity usuario;
 	
-	@Size(max = 40)
 	@Column(name = "TOKEN_INGRESO", unique = true)
 	private String tokenIngreso;
 	
-	@Size(max = 40)
 	@Column(name = "TOKEN_PETICION", unique = true)
 	private String tokenPeticion;
 	

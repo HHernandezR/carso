@@ -6,5 +6,7 @@ public interface UsuarioRepo {
 	
 	public UsuarioEntity findByUsuario(String usuario);
 	public UsuarioEntity save(UsuarioEntity usuarioEntity);
+	public UsuarioEntity delete(UsuarioEntity usuarioEntity);
+	public UsuarioEntity update(UsuarioEntity usuarioEntity);
 
 }

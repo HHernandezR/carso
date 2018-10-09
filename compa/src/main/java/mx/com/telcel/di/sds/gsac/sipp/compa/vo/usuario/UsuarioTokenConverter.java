@@ -17,25 +17,33 @@ public class UsuarioTokenConverter {
 		UsuarioTokenVo usuarioTokenVo = null;
 		
 		if (usuarioTokenEntity != null & usuarioTokenEntity.getIdUsuarioToken() != null) {
-
+			
 			try {
 				usuarioVo = new UsuarioVo();
 				usuarioTokenVo = new UsuarioTokenVo();
 				
 				usuarioVo.setIdUsuario(usuarioTokenEntity.getUsuario().getIdUsuario());
+				usuarioVo.setUsuario(usuarioTokenEntity.getUsuario().getUsuario());
+				usuarioVo.setRol(usuarioTokenEntity.getUsuario().getRol());
+				usuarioVo.setEstatus(usuarioTokenEntity.getUsuario().getEstatus());
+				usuarioVo.setSistemaOrigen(usuarioTokenEntity.getUsuario().getSistemaOrigen());
+				usuarioVo.setUsuarioPadre(usuarioTokenEntity.getUsuario().getUsuarioPadre());
 				
 				usuarioTokenVo.setIdUsuarioToken(usuarioTokenEntity.getIdUsuarioToken());
 				usuarioTokenVo.setUsuario(usuarioVo);
 				usuarioTokenVo.setTokenIngreso(usuarioTokenEntity.getTokenIngreso());
 				usuarioTokenVo.setTokenPeticion(usuarioTokenEntity.getTokenPeticion());
-				usuarioTokenVo.setFechaAcceso(usuarioTokenEntity.getFechaAcceso());
 			} catch (Exception e) {
+				usuarioVo = new UsuarioVo();
 				usuarioTokenVo = new UsuarioTokenVo();
+				usuarioTokenVo.setUsuario(usuarioVo);
 				logger.error("Metodo convertUsuarioTokenEntityVo: ", e);
 			}
 			
-		}else {		
+		}else {	
+			usuarioVo = new UsuarioVo();
 			usuarioTokenVo = new UsuarioTokenVo();
+			usuarioTokenVo.setUsuario(usuarioVo);
 			logger.error("Metodo convertUsuarioTokenEntityVo UsuarioTokenEntity Vacio");
 		}
 		return usuarioTokenVo;

@@ -1,0 +1,23 @@
+--- ALTA DE USUARIOS ---
+
+{
+"idUsuario": null,
+"usuario": "EX112233",
+"rol": "A",
+"estatus": null,
+"sistemaOrigen": "COMPA",
+"usuarioPadre": "EX386155",
+"fechaModificacion": null
+}
+
+--- EDICION USUARIOS ---
+
+{
+"idUsuario": 6,
+"usuario": "EX386155",
+"rol": "A",
+"estatus": "1",
+"sistemaOrigen": "COMPA",
+"usuarioPadre": "EX386155",
+"fechaModificacion": null
+}

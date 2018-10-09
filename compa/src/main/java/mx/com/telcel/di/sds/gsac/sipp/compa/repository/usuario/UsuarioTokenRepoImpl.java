@@ -32,7 +32,7 @@ public class UsuarioTokenRepoImpl implements UsuarioTokenRepo {
 				logger.info("Datos de UsuarioToken Guardados");
 			} catch (CannotGetJdbcConnectionException e) {
 				usuarioTokenEntityReturn = new UsuarioTokenEntity();
-				logger.error("UsuarioTokenEntity save: " + e.getCause());
+				logger.error("UsuarioTokenEntity save: ", e);
 			}
 			
 		}else {
@@ -42,34 +42,7 @@ public class UsuarioTokenRepoImpl implements UsuarioTokenRepo {
 		
 		return usuarioTokenEntityReturn;
 	}
-
-	@Override
-	public UsuarioTokenEntity findByIdUsuario(Long idUsuario) {
-		
-		UsuarioTokenEntity usuarioTokenEntityReturn = null;
-
-		if (idUsuario != null & idUsuario != 0) {
-			
-			try {
-				usuarioTokenEntityReturn = (UsuarioTokenEntity) em.createQuery(
-					    "SELECT c FROM UsuarioTokenEntity c WHERE c.usuario.idUsuario = :idUsuario")
-					    .setParameter("idUsuario", idUsuario)
-					    .getSingleResult();
-			}catch (CannotGetJdbcConnectionException ex) {
-				logger.error("Metodo findByIdUsuario: ", ex);
-			} catch (NoResultException e) {
-				usuarioTokenEntityReturn = new UsuarioTokenEntity();
-				logger.info("UsuarioToken no encontrado en la Base de Batos");
-				logger.error("Metodo findByIdUsuario: ", e.getCause());
-			}
-			
-		} else {
-			usuarioTokenEntityReturn = new UsuarioTokenEntity();
-			logger.error("UsuarioTokenEntity Vacio Metodo findUsuarioToken");
-		}
-		return usuarioTokenEntityReturn;
-	}
-
+	
 	@Override
 	public UsuarioTokenEntity update(UsuarioTokenEntity usuarioTokenEntity) {
 		
@@ -87,6 +60,33 @@ public class UsuarioTokenRepoImpl implements UsuarioTokenRepo {
 		} else {
 			usuarioTokenEntityReturn = new UsuarioTokenEntity();
 			logger.error("UsuarioTokenEntity Vacio Metodo saveUsuarioToken");
+		}
+		return usuarioTokenEntityReturn;
+	}
+
+	@Override
+	public UsuarioTokenEntity findByIdUsuario(Long idUsuario) {
+		
+		UsuarioTokenEntity usuarioTokenEntityReturn = null;
+
+		if (idUsuario != null & idUsuario != 0) {
+			
+			try {
+				usuarioTokenEntityReturn = (UsuarioTokenEntity) em.createQuery(
+					    "SELECT c FROM UsuarioTokenEntity c WHERE c.usuario.idUsuario = :idUsuario")
+					    .setParameter("idUsuario", idUsuario)
+					    .getSingleResult();
+			}catch (CannotGetJdbcConnectionException ex) {
+				logger.error("Metodo findByIdUsuario: ", ex.getCause());
+			} catch (NoResultException e) {
+				usuarioTokenEntityReturn = new UsuarioTokenEntity();
+				logger.info("UsuarioToken no encontrado en la Base de Batos");
+				logger.error("Metodo findByIdUsuario: ", e.getCause());
+			}
+			
+		} else {
+			usuarioTokenEntityReturn = new UsuarioTokenEntity();
+			logger.error("UsuarioTokenEntity Vacio Metodo findUsuarioToken");
 		}
 		return usuarioTokenEntityReturn;
 	}

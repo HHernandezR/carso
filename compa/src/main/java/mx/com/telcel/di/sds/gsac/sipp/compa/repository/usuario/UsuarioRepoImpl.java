@@ -3,9 +3,9 @@ package mx.com.telcel.di.sds.gsac.sipp.compa.repository.usuario;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 
 import mx.com.telcel.di.sds.gsac.sipp.compa.model.usuario.UsuarioEntity;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
@@ -24,6 +24,53 @@ public class UsuarioRepoImpl implements UsuarioRepo {
 	@Value("${usuario.estatus.activo}")
 	private char estatusActivo;
 
+	@Override
+	public UsuarioEntity save(UsuarioEntity usuarioEntity) {
+
+		try {
+			em.persist(usuarioEntity);
+		}catch (CannotGetJdbcConnectionException ex) {
+			logger.error("Metodo save: ", ex);
+		}catch (PersistenceException e){
+			logger.error("Metodo save: ", e);
+		}
+		return null;
+	}
+	
+	@Override
+	public UsuarioEntity update(UsuarioEntity usuarioEntity) {
+		
+		UsuarioEntity usuarioEntityReturn = null;
+		
+		if (usuarioEntity != null & usuarioEntity.getIdUsuario() != null) {
+			
+			try {
+				em.merge(usuarioEntity);
+			} catch (CannotGetJdbcConnectionException e) {
+				usuarioEntityReturn = new UsuarioEntity();
+				logger.error("UsuarioEntity update: ", e);
+			}
+			
+		} else {
+			usuarioEntityReturn = new UsuarioEntity();
+			logger.error("UsuarioTokenEntity Vacio Metodo saveUsuarioToken");
+		}
+		return usuarioEntityReturn;
+	}
+	
+	@Override
+	public UsuarioEntity delete(UsuarioEntity usuarioEntity) {
+
+		try {
+			em.merge(usuarioEntity);
+		}catch (CannotGetJdbcConnectionException ex) {
+			logger.error("Metodo save: ", ex);
+		}catch (PersistenceException e){
+			logger.error("Metodo save: ", e);
+		}
+		return null;
+	}
+	
 	@Override
 	public UsuarioEntity findByUsuario(String usuario) {
 		
@@ -52,17 +99,5 @@ public class UsuarioRepoImpl implements UsuarioRepo {
 		return usuarioEntityResult;
 	}
 
-	@Override
-	public UsuarioEntity save(UsuarioEntity usuarioEntity) {
-
-		try {
-			em.persist(usuarioEntity);
-			logger.info("Datos de Usuario Guardados");
-			em.flush();
-		} catch (Exception e) {
-			logger.error("Metodo save: ", e.getCause());
-		}
-		return null;
-	}
 
 }

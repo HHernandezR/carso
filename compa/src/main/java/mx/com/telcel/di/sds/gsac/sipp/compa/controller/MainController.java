@@ -47,45 +47,46 @@ public class MainController {
 			@PathVariable("usuarioIngreso") String usuarioIngreso,
 			@PathVariable("fuerzaVentas") String fuerzaVentas,
 			@PathVariable("sistemaAcceso") String sistemaAcceso) {
-
+		
 		String vista = "index";
+		Usuario_UsuarioTokenVo usuario_UsuarioTokenVo = null;
 
-		if ((usuarioIngreso != null & usuarioIngreso != "")	& (tokenIngreso != null & tokenIngreso != "")) {
-
-			if ((usuarioTokenService.grantAccesUsuarioToken(usuarioIngreso, tokenIngreso)) & (commons.validateUuid(tokenIngreso))) {
-				
-				Usuario_UsuarioTokenVo usuario_UsuarioTokenVo = null;
-
-				try {
-					usuario_UsuarioTokenVo = usuarioService.getUsuarioAccess(usuarioIngreso, tokenIngreso);
-
+		if ((tokenIngreso.trim() != null & tokenIngreso.trim()!= "")
+				&(usuarioIngreso.trim() != null & usuarioIngreso.trim() != "")
+				&(fuerzaVentas.trim() != null & fuerzaVentas.trim() != "")
+				&(sistemaAcceso.trim() != null & sistemaAcceso.trim() != "")) {
+			
+			try {
+			
+				if ((usuarioTokenService.grantAccesUsuarioToken(usuarioIngreso.trim(), tokenIngreso.trim())) & (commons.validateUuid(tokenIngreso))) {
+					
+					usuario_UsuarioTokenVo = usuarioService.getUsuarioAccess(usuarioIngreso.trim(), tokenIngreso.trim());
+					
 					if ((usuario_UsuarioTokenVo.getUsuarioTokenVo() != null & usuario_UsuarioTokenVo.getUsuarioVo().getIdUsuario() != null)) {
 
 						model.addAttribute("IdUsuarioToken", usuario_UsuarioTokenVo.getUsuarioTokenVo().getIdUsuarioToken());
 						model.addAttribute("IdUsuario", usuario_UsuarioTokenVo.getUsuarioVo().getIdUsuario());
 						model.addAttribute("Usuario", usuario_UsuarioTokenVo.getUsuarioVo().getUsuario());
 						model.addAttribute("RolUsuario", usuario_UsuarioTokenVo.getUsuarioVo().getRol());
+						model.addAttribute("SistemaOrigen", usuario_UsuarioTokenVo.getUsuarioVo().getSistemaOrigen());
 						model.addAttribute("TokenIngreso", usuario_UsuarioTokenVo.getUsuarioTokenVo().getTokenIngreso());
 						model.addAttribute("TokenPeticion", usuario_UsuarioTokenVo.getUsuarioTokenVo().getTokenPeticion());
 
 					} else {
 						vista = "error";
 					}
-
-				} catch (Exception e) {
-					logger.error("Metodo grantAccess", e);
+					
+				} else {
+					vista = "error";
+					logger.info("El Usuario tiene una Sesion Activa");
 				}
 				
-			} else {
-				vista = "error";
-				logger.info("El Token de Acceso no Cumple con la Estructura Correcta");
-				logger.info("El Usuario tiene una Sesion Activa");
+			} catch (Exception e) {
+				logger.error("Metodo grantAccess", e);
 			}
-
+			
 		} else {
-			vista = "error";
-			logger.error("Nombre de Usuario o Token de Acceso Vacios Metodo getUsuarioAccess");
-			logger.info("Retornando Vista Error");
+			logger.error("Datos de Acceso Vacios Metodo getUsuarioAccess");
 		}
 
 		return vista;

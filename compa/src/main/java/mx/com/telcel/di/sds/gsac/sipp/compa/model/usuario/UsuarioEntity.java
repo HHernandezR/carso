@@ -10,37 +10,31 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "USUARIO")
+@Table(name = "TG_USUARIO")
 public class UsuarioEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USUARIO_SEQ")
-	@SequenceGenerator(sequenceName = "usuario_seq", allocationSize = 1, name = "USUARIO_SEQ")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TG_USUARIO_SEQ")
+	@SequenceGenerator(sequenceName = "tg_usuario_seq", allocationSize = 1, name = "TG_USUARIO_SEQ")
 	@Column(name = "ID_USUARIO")
 	private Long idUsuario;
 
-	@Size(max = 24)
 	@Column(name = "USUARIO", unique = true)
 	private String usuario;
 	
-	@Size(max = 1)
 	@Column(name = "ROL")
 	private char rol;
 
-	@Size(max = 1)
 	@Column(name = "ESTATUS")
 	private char estatus;
 
-	@Size(max = 24)
 	@Column(name = "SISTEMA_ORIGEN")
 	private String sistemaOrigen;
 
-	@Size(max = 24)
 	@Column(name = "USUARIO_PADRE")
 	private String usuarioPadre;
 	
